@@ -50,6 +50,10 @@ public class SendUserAreaComponent {
         this.session = session;
         webSocketSet.put(loginUserId,session);
         this.loginUserId = loginUserId;
+        if(loginUserId != null){
+            PoliceAffTherad therad1 = new PoliceAffTherad(policeAffDao,loginUserId,webSocketSet);
+            therad1.start();
+        }
         thread=new UserAreaThread(userAreaDao,session);
         thread.start();
     }
@@ -60,6 +64,7 @@ public class SendUserAreaComponent {
         System.out.println("这是推送过来的message:"+js);
         System.out.println("这是推送过来的message里的puchid"+(String) js.get("pushId"));
         this.pushId = (String) js.get("pushId");
+        System.out.println((String) js.get("pushId"));
         if(this.pushId != null){
             PoliceAffTherad therad1 = new PoliceAffTherad(policeAffDao,this.pushId,webSocketSet);
             therad1.start();
